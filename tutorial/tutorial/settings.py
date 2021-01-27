@@ -41,7 +41,6 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     'snippets.apps.SnippetsConfig',
-
 ]
 
 THIRD_PARTY_APPS = [
