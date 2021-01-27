@@ -50,6 +50,6 @@ def snippet_detail(request, pk):
             return JsonResponse(serializer.data)
         return JsonResponse(serializer.errors, status=400)
 
-    elif request.method == 'DELETE'
-    snippet.delete()
-    return HttpResponse(status=204)
+    elif request.method == 'DELETE':
+        snippet.delete()
+        return HttpResponse(status=204)
