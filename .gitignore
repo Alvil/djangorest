@@ -1,0 +1,41 @@
+# database
+*.db
+*.sql
+*.sqlite3
+
+# os files
+.DS_Store
+
+# editors
+.idea
+*.sublime-project
+*.sublime-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.editorconfig
+
+# environment
+venv/
+env/
+.env
+
+# cache
+__pycache__
+*.pyc
+
+# celery
+celerybeat-schedule.*
+celerybeat-schedule
+celerybeat.pid
+
+# local scripts
+scripts/
+
+# node
+**/node_modules/
+
+# secrets
+secrets.json
