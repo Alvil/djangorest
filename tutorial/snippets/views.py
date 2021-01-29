@@ -1,3 +1,7 @@
+from django.http import Http404
+
+from rest_framework.views import APIView
+
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
@@ -7,17 +11,17 @@ from snippets.models import Snippet
 from snippets.serializers import SnippetSerializer
 
 
-@api_view(['GET', 'POST'])
-def snippet_list(request, format=None):
+class SnippetList(APIView):
     """
     List all code snippets, or create a new snippet
     """
-    if request.method == 'GET':
-        snippets = Snippet.objects.all()
+
+    def get(self, request, format=None):
+        snippet = Snippet.objects.all()
         serializer = SnippetSerializer(snippets, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
