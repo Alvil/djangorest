@@ -29,21 +29,24 @@ class SnippetList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'POST', 'DELETE'])
-def snippet_detail(request, pk, format=None):
+class SnippetDetail(APIView):
     """
     Retrieve, update, or delete a snippet
     """
-    try:
-        snippet = Snippet.objects.get(pk=pk)
-    except Snippet.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
+    def get_object(self, pk):
+        try:
+            return Snippet.objects.get(pk=pk)
+        except Snippet.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet, data=request.data)
 
         if serializer.is_valid():
@@ -51,6 +54,7 @@ def snippet_detail(request, pk, format=None):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         snippet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
