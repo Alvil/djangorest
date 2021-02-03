@@ -8,6 +8,7 @@ from rest_framework.generics import RetrieveAPIView
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from rest_framework import permissions
+from rest_framework import renderers
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -58,3 +59,12 @@ class UserList(ListAPIView):
 class UserDetail(RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+
+class SnippetHighlight(GenericAPIView):
+    queryset = Snippet.objects.all()
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
