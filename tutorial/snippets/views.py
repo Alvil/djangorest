@@ -25,14 +25,6 @@ from snippets.serializers import SnippetSerializer
 from snippets.serializers import UserSerializer
 
 
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format),
-        'snippets': reverse('snippet-list', request=request, format=format)
-    })
-
-
 class SnippetViewSet(ModelViewSet):
     """
     Class for list, create, update, retrieve, and destroy 
