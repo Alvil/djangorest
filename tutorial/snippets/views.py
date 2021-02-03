@@ -10,12 +10,14 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework import permissions
 from rest_framework import renderers
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from snippets.models import Snippet
 from snippets.permissions import IsOwnerOrReadOnly
@@ -31,26 +33,25 @@ def api_root(request, format=None):
     })
 
 
-class SnippetList(ListCreateAPIView):
+class SnippetViewSet(ModelViewSet):
     """
-    List all code snippets, or create a new snippet
+    Class for list, create, update, retrieve, and destroy 
+    actions on snippets
+
+    Also added method for highlight action
     """
     queryset = Snippet.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = SnippetSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    @action(detail=True, renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        snippet = self.get_object()
+        return Response(snippet.highlighted)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-
-class SnippetDetail(RetrieveUpdateDestroyAPIView):
-    """
-    Retrieve, update, or delete a snippet
-    """
-    queryset = Snippet.objects.all()
-    permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
-    serializer_class = SnippetSerializer
 
 
 class UserViewSet(ReadOnlyModelViewSet):
@@ -59,12 +60,3 @@ class UserViewSet(ReadOnlyModelViewSet):
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-
-class SnippetHighlight(GenericAPIView):
-    queryset = Snippet.objects.all()
-    renderer_classes = [renderers.StaticHTMLRenderer]
-
-    def get(self, request, *args, **kwargs):
-        snippet = self.get_object()
-        return Response(snippet.highlighted)
