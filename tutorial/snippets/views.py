@@ -15,6 +15,8 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
+from rest_framework.viewsets import ReadOnlyModelViewSet
+
 from snippets.models import Snippet
 from snippets.permissions import IsOwnerOrReadOnly
 from snippets.serializers import SnippetSerializer
@@ -51,12 +53,10 @@ class SnippetDetail(RetrieveUpdateDestroyAPIView):
     serializer_class = SnippetSerializer
 
 
-class UserList(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(RetrieveAPIView):
+class UserViewSet(ReadOnlyModelViewSet):
+    """
+    Class for 'list' and 'retrieve' actions on user
+    """
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
