@@ -1,21 +1,9 @@
 from django.contrib.auth.models import User
-from django.http import Http404
-
-from rest_framework.generics import GenericAPIView
-from rest_framework.generics import ListAPIView
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 from rest_framework import permissions
 from rest_framework import renderers
-from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework.views import APIView
-
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.viewsets import ModelViewSet
 
