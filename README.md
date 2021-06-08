@@ -5,4 +5,4 @@ This was created upon following the tutorial on https://www.django-rest-framewor
 
 This will be used as reference whenever a django-rest project is created.
 
-test update readme
+am i receiving notifs?
